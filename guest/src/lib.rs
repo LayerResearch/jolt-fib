@@ -1,5 +1,7 @@
 #![cfg_attr(feature = "guest", no_std)]
 
+use jolt_sdk as jolt;
+
 #[jolt::provable]
 fn fib(n: u32) -> u128 {
     let mut a: u128 = 0;
