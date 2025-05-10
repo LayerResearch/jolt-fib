@@ -5,7 +5,7 @@ members = ["guest", "host"]
 default-members = ["host"]
 
 [workspace.dependencies]
-jolt-sdk = { git = "https://github.com/a16z/jolt", features = ["host"] }
+jolt-sdk = { git = "https://github.com/a16z/jolt" }
 ark-serialize = "0.5.0"
 
 [profile.release]

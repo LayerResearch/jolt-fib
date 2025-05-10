@@ -1320,13 +1320,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "guest"
-version = "0.1.0"
-dependencies = [
- "jolt-sdk",
-]
-
-[[package]]
 name = "h2"
 version = "0.4.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1795,11 +1788,18 @@ dependencies = [
 ]
 
 [[package]]
-name = "jolt-fib"
+name = "jolt-guest"
+version = "0.1.0"
+dependencies = [
+ "jolt-sdk",
+]
+
+[[package]]
+name = "jolt-host"
 version = "0.1.0"
 dependencies = [
  "ark-serialize 0.5.0",
- "guest",
+ "jolt-guest",
  "jolt-sdk",
 ]
 

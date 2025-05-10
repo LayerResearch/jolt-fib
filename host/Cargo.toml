@@ -1,11 +1,11 @@
 [package]
-name = "jolt-fib"
+name = "jolt-host"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 jolt-sdk = { workspace = true, features = ["host"] }
-guest = { path = "../guest" }
+guest = { path = "../guest", package = "jolt-guest" }
 ark-serialize = { workspace = true }
 
 [features]
