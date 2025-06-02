@@ -7,7 +7,7 @@ help:
 
 bootstrap: ## Install required dependencies
 	rustup component add clippy rustfmt
-	cargo install cargo-nextest
+	cargo install cargo-nextest cargo-expand
 
 build-fib-guest: ## Build the fib-guest binary
 	JOLT_FUNC_NAME=fib \
@@ -25,11 +25,19 @@ build-voj-guest: ## Build the voj-guest binary
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
 	cargo build --release --features guest -p voj-guest --target riscv32im-unknown-none-elf
 
-build-voj-host: build-fib-guest build-voj-guest ## Build the voj-host binary
+build-voj-host: ## Build the voj-host binary
 	cargo build --release --package voj-host
 
 run-voj-host: build-voj-host ## Run the voj-host binary
 	RUST_BACKTRACE=1 ./target/release/voj-host
+
+expand-fib-guest: ## Expand the fib-guest binary
+	JOLT_FUNC_NAME=fib \
+    cargo expand --release --features "jolt-sdk/host" -p fib-guest --lib
+
+run-example: ## Run the fib example
+	cargo build -p jolt-guest-helper --example fib --release
+	./target/release/examples/fib
 
 lint: ## Fix linting errors
 	cargo clippy --fix --allow-dirty --allow-staged -- -D warnings

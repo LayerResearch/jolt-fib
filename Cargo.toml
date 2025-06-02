@@ -1,17 +1,22 @@
 
 [workspace]
 resolver = "2"
-members = ["fib/guest", "fib/host", "voj/guest", "voj/host"]
+members = ["fib/guest", "fib/host", "jolt-guest-helper", "voj/guest", "voj/host"]
 default-members = ["fib/host", "voj/host"]
 
 [workspace.dependencies]
 jolt-sdk = { git = "https://github.com/a16z/jolt", branch = "feat/twist-shout-integration" }
 ark-serialize = "0.5.0"
+serde = { version = "1.0.219", default-features = false, features = ["derive"] }
+thiserror = { version = "2.0.10", default-features = false }
+postcard = { version = "1.0.8", default-features = false }
+
 # misc
 spinners = "4.1.1"
 # local
 fib-guest = { path = "fib/guest", package = "fib-guest" }
 voj-guest = { path = "voj/guest", package = "voj-guest" }
+jolt-guest-helper = { path = "jolt-guest-helper", package = "jolt-guest-helper" }
 
 [profile.release]
 debug = 1

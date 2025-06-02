@@ -1,0 +1,21 @@
+[package]
+name = "jolt-guest-helper"
+version = "0.1.0"
+edition = "2021"
+description = "Helper library for Jolt guest program development"
+license = "MIT"
+
+[dependencies]
+jolt-sdk = { workspace = true, features = ["host"] }
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+postcard = { workspace = true }
+spinners = { workspace = true }
+
+[[example]]
+name = "fib"
+path = "examples/fib.rs"
+
+[[example]]
+name = "steps"
+path = "examples/macros.rs"
