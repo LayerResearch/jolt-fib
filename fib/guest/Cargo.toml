@@ -1,5 +1,5 @@
 [package]
-name = "jolt-guest"
+name = "fib-guest"
 version = "0.1.0"
 edition = "2021"
 
