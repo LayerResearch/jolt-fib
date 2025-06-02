@@ -1,4 +1,5 @@
 use spinners::{Spinner, Spinners};
+use voj_guest as guest;
 
 macro_rules! step {
     ($msg:expr, $action:expr) => {{

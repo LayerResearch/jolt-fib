@@ -1,3 +1,4 @@
+
 .PHONY: bootstrap help
 
 help:
@@ -8,13 +9,23 @@ bootstrap: ## Install required dependencies
 	rustup component add clippy rustfmt
 	cargo install cargo-nextest
 
+build-fib-guest: ## Build the fib-guest binary
+	JOLT_FUNC_NAME=fib \
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
+	cargo build --release --features guest -p fib-guest --target riscv32im-unknown-none-elf
+
 build-fib-host: ## Build the fib-host binary
 	cargo build --release --package fib-host
 
 run-fib-host: build-fib-host ## Run the fib-host binary
 	RUST_BACKTRACE=1 ./target/release/fib-host
 
-build-voj-host: ## Build the voj-host binary
+build-voj-guest: ## Build the voj-guest binary
+	JOLT_FUNC_NAME=voj \
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
+	cargo build --release --features guest -p voj-guest --target riscv32im-unknown-none-elf
+
+build-voj-host: build-fib-guest build-voj-guest ## Build the voj-host binary
 	cargo build --release --package voj-host
 
 run-voj-host: build-voj-host ## Run the voj-host binary

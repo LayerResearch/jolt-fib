@@ -5,7 +5,8 @@ edition = "2021"
 
 [dependencies]
 jolt-sdk = { workspace = true, features = ["host"] }
-guest = { path = "../guest", package = "voj-guest" }
+voj-guest = { workspace = true }
+fib-guest = { workspace = true }
 ark-serialize = { workspace = true }
 spinners = { workspace = true }
 

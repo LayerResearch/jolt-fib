@@ -1,3 +1,4 @@
+use fib_guest as guest;
 use spinners::{Spinner, Spinners};
 
 macro_rules! step {

@@ -9,6 +9,9 @@ jolt-sdk = { git = "https://github.com/a16z/jolt", branch = "feat/twist-shout-in
 ark-serialize = "0.5.0"
 # misc
 spinners = "4.1.1"
+# local
+fib-guest = { path = "fib/guest", package = "fib-guest" }
+voj-guest = { path = "voj/guest", package = "voj-guest" }
 
 [profile.release]
 debug = 1
