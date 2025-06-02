@@ -89,7 +89,7 @@ checksum = "867a5469d61480fea08c7333ffeca52d5b621f5ca2e44f271b117ec1fc9a0525"
 dependencies = [
  "alloy-sol-macro-input",
  "const-hex",
- "heck",
+ "heck 0.5.0",
  "indexmap",
  "proc-macro-error",
  "proc-macro2",
@@ -107,7 +107,7 @@ checksum = "2e482dc33a32b6fadbc0f599adea520bd3aaa585c141a80b404d0a3e3fa72528"
 dependencies = [
  "const-hex",
  "dunce",
- "heck",
+ "heck 0.5.0",
  "proc-macro2",
  "quote",
  "syn 2.0.101",
@@ -477,7 +477,7 @@ dependencies = [
  "cfg-if",
  "libc",
  "miniz_oxide",
- "object 0.36.7",
+ "object",
  "rustc-demangle",
  "windows-targets 0.52.6",
 ]
@@ -507,51 +507,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1f45e9417d87227c7a56d22e471c6206462cba514c7590c09aff4cf6d1ddcad"
 dependencies = [
  "serde",
-]
-
-[[package]]
-name = "binius_field"
-version = "0.2.0"
-source = "git+https://gitlab.com/IrreducibleOSS/binius#d38a3e29e771191682a0a33b5f71c93797b924a8"
-dependencies = [
- "binius_maybe_rayon",
- "binius_utils",
- "bytemuck",
- "cfg-if",
- "derive_more",
- "rand 0.8.5",
- "seq-macro",
- "subtle",
- "thiserror 2.0.12",
- "tracing",
- "trait-set",
- "transpose",
-]
-
-[[package]]
-name = "binius_maybe_rayon"
-version = "0.2.0"
-source = "git+https://gitlab.com/IrreducibleOSS/binius#d38a3e29e771191682a0a33b5f71c93797b924a8"
-dependencies = [
- "cfg-if",
- "either",
- "itertools 0.14.0",
-]
-
-[[package]]
-name = "binius_utils"
-version = "0.2.0"
-source = "git+https://gitlab.com/IrreducibleOSS/binius#d38a3e29e771191682a0a33b5f71c93797b924a8"
-dependencies = [
- "auto_impl",
- "binius_maybe_rayon",
- "bytemuck",
- "bytes",
- "cfg-if",
- "generic-array",
- "itertools 0.14.0",
- "thiserror 2.0.12",
- "thread_local",
 ]
 
 [[package]]
@@ -613,20 +568,6 @@ name = "bytemuck"
 version = "1.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9134a6ef01ce4b366b50689c94f82c14bc72bc5d0386829828a2e2752ef7958c"
-dependencies = [
- "bytemuck_derive",
-]
-
-[[package]]
-name = "bytemuck_derive"
-version = "1.9.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7ecc273b49b3205b83d648f0690daa588925572cc5063745bfe547fe7ec8e1a1"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.101",
-]
 
 [[package]]
 name = "byteorder"
@@ -683,7 +624,7 @@ version = "4.5.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "09176aae279615badda0765c0c0b3f6ed53f4709118af73cf4655d85d1530cd7"
 dependencies = [
- "heck",
+ "heck 0.5.0",
  "proc-macro2",
  "quote",
  "syn 2.0.101",
@@ -719,13 +660,13 @@ checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 [[package]]
 name = "common"
 version = "0.2.0"
-source = "git+https://github.com/a16z/jolt#9914eee168ba38e8021be8e6832b30c1e3f68ee7"
+source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "ark-serialize 0.5.0",
  "serde",
  "serde_json",
- "strum",
- "strum_macros",
+ "strum 0.26.3",
+ "strum_macros 0.26.4",
  "syn 1.0.109",
 ]
 
@@ -1142,6 +1083,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "fib-guest"
+version = "0.1.0"
+dependencies = [
+ "jolt-sdk",
+]
+
+[[package]]
+name = "fib-host"
+version = "0.1.0"
+dependencies = [
+ "ark-serialize 0.5.0",
+ "fib-guest",
+ "jolt-sdk",
+ "spinners",
+]
+
+[[package]]
 name = "fixed-hash"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1160,20 +1118,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d674e81391d1e1ab681a28d99df07927c6d4aa5b027d7da16ba32d1d21ecd99"
 
 [[package]]
-name = "flate2"
-version = "1.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7ced92e76e966ca2fd84c8f7aa01a4aea65b0eb6648d72f7c8f3e2764a67fece"
-dependencies = [
- "crc32fast",
- "miniz_oxide",
-]
-
-[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
+
+[[package]]
+name = "foldhash"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2"
 
 [[package]]
 name = "foreign-types"
@@ -1345,7 +1299,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "84b26c544d002229e640969970a2e74021aadf6e2f96372b9c58eff97de08eb3"
 dependencies = [
  "allocator-api2",
+ "foldhash",
 ]
+
+[[package]]
+name = "heck"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
 
 [[package]]
 name = "heck"
@@ -1717,15 +1678,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "itertools"
-version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
-dependencies = [
- "either",
-]
-
-[[package]]
 name = "itoa"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1734,7 +1686,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 [[package]]
 name = "jolt-core"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#9914eee168ba38e8021be8e6832b30c1e3f68ee7"
+source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "alloy-primitives",
  "alloy-sol-types",
@@ -1746,7 +1698,6 @@ dependencies = [
  "ark-serialize-derive 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "ark-std 0.5.0",
  "bincode",
- "binius_field",
  "bytemuck",
  "clap",
  "common",
@@ -1760,12 +1711,14 @@ dependencies = [
  "icicle-runtime",
  "indicatif",
  "itertools 0.10.5",
+ "lazy_static",
  "memory-stats",
  "num",
  "num-derive",
  "num-integer",
  "num-traits",
  "once_cell",
+ "paste",
  "postcard",
  "rand 0.7.3",
  "rand_chacha 0.3.1",
@@ -1775,8 +1728,8 @@ dependencies = [
  "reqwest",
  "serde",
  "sha3",
- "strum",
- "strum_macros",
+ "strum 0.26.3",
+ "strum_macros 0.26.4",
  "sys-info",
  "target-lexicon",
  "thiserror 1.0.69",
@@ -1788,25 +1741,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "jolt-guest"
-version = "0.1.0"
-dependencies = [
- "jolt-sdk",
-]
-
-[[package]]
-name = "jolt-host"
-version = "0.1.0"
-dependencies = [
- "ark-serialize 0.5.0",
- "jolt-guest",
- "jolt-sdk",
-]
-
-[[package]]
 name = "jolt-sdk"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#9914eee168ba38e8021be8e6832b30c1e3f68ee7"
+source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "ark-bn254",
  "ark-ec",
@@ -1820,7 +1757,7 @@ dependencies = [
 [[package]]
 name = "jolt-sdk-macros"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#9914eee168ba38e8021be8e6832b30c1e3f68ee7"
+source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "common",
  "proc-macro2",
@@ -1915,6 +1852,12 @@ name = "log"
 version = "0.4.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
+
+[[package]]
+name = "maplit"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3e2e65a1a2e43cfcb47a895c4c8b10d1f4a61097f9f254f183aee60cad9c651d"
 
 [[package]]
 name = "memchr"
@@ -2078,21 +2021,13 @@ checksum = "830b246a0e5f20af87141b25c173cd1b609bd7779a4617d6ec582abaf90870f3"
 
 [[package]]
 name = "object"
-version = "0.32.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a6a622008b6e321afc04970976f62ee297fdbaa6f95318ca343e3eebb9648441"
-dependencies = [
- "flate2",
- "memchr",
- "ruzstd",
-]
-
-[[package]]
-name = "object"
 version = "0.36.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "62948e14d923ea95ea2c7c86c71013138b66525b86bdc08d2dcc262bdb497b87"
 dependencies = [
+ "crc32fast",
+ "hashbrown",
+ "indexmap",
  "memchr",
 ]
 
@@ -2745,17 +2680,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ruzstd"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58c4eb8a81997cf040a091d1f7e1938aeab6749d3a0dfa73af43cdc32393483d"
-dependencies = [
- "byteorder",
- "derive_more",
- "twox-hash",
-]
-
-[[package]]
 name = "ryu"
 version = "1.0.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2830,12 +2754,6 @@ checksum = "9900206b54a3527fdc7b8a938bffd94a568bac4f4aa8113b209df75a09c0dec2"
 dependencies = [
  "pest",
 ]
-
-[[package]]
-name = "seq-macro"
-version = "0.3.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1bc711410fbe7399f390ca1c3b60ad0f53f80e95c5eb935e52268a0e2cd49acc"
 
 [[package]]
 name = "serde"
@@ -2963,6 +2881,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "spinners"
+version = "4.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0ef947f358b9c238923f764c72a4a9d42f2d637c46e059dbd319d6e7cfb4f82"
+dependencies = [
+ "lazy_static",
+ "maplit",
+ "strum 0.24.1",
+]
+
+[[package]]
 name = "spki"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2985,16 +2914,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
-name = "strength_reduce"
-version = "0.2.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe895eb47f22e2ddd4dabc02bce419d2e643c8e3b585c78158b349195bc24d82"
-
-[[package]]
 name = "strsim"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
+
+[[package]]
+name = "strum"
+version = "0.24.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "063e6045c0e62079840579a7e47a355ae92f60eb74daaf156fb1e84ba164e63f"
+dependencies = [
+ "strum_macros 0.24.3",
+]
 
 [[package]]
 name = "strum"
@@ -3004,11 +2936,24 @@ checksum = "8fec0f0aef304996cf250b31b5a10dee7980c85da9d759361292b8bca5a18f06"
 
 [[package]]
 name = "strum_macros"
+version = "0.24.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e385be0d24f186b4ce2f9982191e7101bb737312ad61c1f2f984f34bcf85d59"
+dependencies = [
+ "heck 0.4.1",
+ "proc-macro2",
+ "quote",
+ "rustversion",
+ "syn 1.0.109",
+]
+
+[[package]]
+name = "strum_macros"
 version = "0.26.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c6bee85a5a24955dc440386795aa378cd9cf82acd5f764469152d2270e581be"
 dependencies = [
- "heck",
+ "heck 0.5.0",
  "proc-macro2",
  "quote",
  "rustversion",
@@ -3295,11 +3240,11 @@ checksum = "8df9b6e13f2d32c91b9bd719c00d1958837bc7dec474d94952798cc8e69eeec3"
 [[package]]
 name = "tracer"
 version = "0.2.0"
-source = "git+https://github.com/a16z/jolt#9914eee168ba38e8021be8e6832b30c1e3f68ee7"
+source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "common",
  "fnv",
- "object 0.32.2",
+ "object",
  "tracing",
 ]
 
@@ -3372,41 +3317,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "trait-set"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b79e2e9c9ab44c6d7c20d5976961b47e8f49ac199154daa514b77cd1ab536625"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
-name = "transpose"
-version = "0.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ad61aed86bc3faea4300c7aee358b4c6d0c8d6ccc36524c96e4c92ccf26e77e"
-dependencies = [
- "num-integer",
- "strength_reduce",
-]
-
-[[package]]
 name = "try-lock"
 version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e421abadd41a4225275504ea4d6566923418b7f05506fbc9c0fe86ba7396114b"
-
-[[package]]
-name = "twox-hash"
-version = "1.6.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
-dependencies = [
- "cfg-if",
- "static_assertions",
-]
 
 [[package]]
 name = "typenum"

@@ -1,17 +1,20 @@
 
 [workspace]
 resolver = "2"
-members = ["guest", "host"]
-default-members = ["host"]
+members = ["fib/guest", "fib/host"]
+default-members = ["fib/host"]
 
 [workspace.dependencies]
 jolt-sdk = { git = "https://github.com/a16z/jolt" }
 ark-serialize = "0.5.0"
+# misc
+spinners = "4.1.1"
 
 [profile.release]
 debug = 1
 codegen-units = 1
-lto = "fat"
+lto = false
+opt-level = 0
 
 [patch.crates-io]
 ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
