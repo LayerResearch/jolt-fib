@@ -45,7 +45,7 @@ dependencies = [
  "bytes",
  "cfg-if",
  "const-hex",
- "derive_more",
+ "derive_more 0.99.20",
  "hex-literal",
  "itoa",
  "k256",
@@ -660,9 +660,10 @@ checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 [[package]]
 name = "common"
 version = "0.2.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
+source = "git+https://github.com/a16z/jolt?branch=feat%2Ftwist-shout-integration#8047e77035094bc215e98e2fcd60f9748c386115"
 dependencies = [
  "ark-serialize 0.5.0",
+ "derive_more 2.0.1",
  "serde",
  "serde_json",
  "strum 0.26.3",
@@ -846,6 +847,26 @@ dependencies = [
  "proc-macro2",
  "quote",
  "rustc_version 0.4.1",
+ "syn 2.0.101",
+]
+
+[[package]]
+name = "derive_more"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "093242cf7570c207c83073cf82f79706fe7b8317e98620a47d5be7c3d8497678"
+dependencies = [
+ "derive_more-impl",
+]
+
+[[package]]
+name = "derive_more-impl"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bda628edc44c4bb645fbe0f758797143e4e07926f7ebf4e9bdfbd3d2ce621df3"
+dependencies = [
+ "proc-macro2",
+ "quote",
  "syn 2.0.101",
 ]
 
@@ -1686,7 +1707,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 [[package]]
 name = "jolt-core"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
+source = "git+https://github.com/a16z/jolt?branch=feat%2Ftwist-shout-integration#8047e77035094bc215e98e2fcd60f9748c386115"
 dependencies = [
  "alloy-primitives",
  "alloy-sol-types",
@@ -1701,6 +1722,7 @@ dependencies = [
  "bytemuck",
  "clap",
  "common",
+ "derive_more 2.0.1",
  "dirs",
  "enum_dispatch",
  "eyre",
@@ -1743,7 +1765,7 @@ dependencies = [
 [[package]]
 name = "jolt-sdk"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
+source = "git+https://github.com/a16z/jolt?branch=feat%2Ftwist-shout-integration#8047e77035094bc215e98e2fcd60f9748c386115"
 dependencies = [
  "ark-bn254",
  "ark-ec",
@@ -1757,7 +1779,7 @@ dependencies = [
 [[package]]
 name = "jolt-sdk-macros"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
+source = "git+https://github.com/a16z/jolt?branch=feat%2Ftwist-shout-integration#8047e77035094bc215e98e2fcd60f9748c386115"
 dependencies = [
  "common",
  "proc-macro2",
@@ -3240,11 +3262,19 @@ checksum = "8df9b6e13f2d32c91b9bd719c00d1958837bc7dec474d94952798cc8e69eeec3"
 [[package]]
 name = "tracer"
 version = "0.2.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
+source = "git+https://github.com/a16z/jolt?branch=feat%2Ftwist-shout-integration#8047e77035094bc215e98e2fcd60f9748c386115"
 dependencies = [
+ "ark-serialize 0.5.0",
  "common",
+ "derive_more 2.0.1",
  "fnv",
  "object",
+ "paste",
+ "rand 0.7.3",
+ "serde",
+ "serde_json",
+ "strum 0.26.3",
+ "strum_macros 0.26.4",
  "tracing",
 ]
 

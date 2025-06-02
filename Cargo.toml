@@ -5,7 +5,7 @@ members = ["fib/guest", "fib/host", "voj/guest", "voj/host"]
 default-members = ["fib/host", "voj/host"]
 
 [workspace.dependencies]
-jolt-sdk = { git = "https://github.com/a16z/jolt" }
+jolt-sdk = { git = "https://github.com/a16z/jolt", branch = "feat/twist-shout-integration" }
 ark-serialize = "0.5.0"
 # misc
 spinners = "4.1.1"

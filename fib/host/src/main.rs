@@ -11,13 +11,13 @@ macro_rules! step {
 
 pub fn main() {
     let target_dir = "/tmp/fib-guest-targets";
-    let program = step!("Compiling guest code", { guest::compile_fib(target_dir) });
+    let mut program = step!("Compiling guest code", { guest::compile_fib(target_dir) });
 
     let prover_preprocessing = step!("Preprocessing prover", {
-        guest::preprocess_prover_fib(&program)
+        guest::preprocess_prover_fib(&mut program)
     });
     let verifier_preprocessing = step!("Preprocessing verifier", {
-        guest::preprocess_verifier_fib(&program)
+        guest::preprocess_verifier_fib(&mut program)
     });
 
     let prove_fib = step!("Building prover", {

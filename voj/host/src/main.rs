@@ -11,13 +11,13 @@ macro_rules! step {
 
 pub fn main() {
     let target_dir = "/tmp/voj-guest-targets";
-    let program = step!("Compiling guest code", { guest::compile_voj(target_dir) });
+    let mut program = step!("Compiling guest code", { guest::compile_voj(target_dir) });
 
     let prover_preprocessing = step!("Preprocessing prover", {
-        guest::preprocess_prover_voj(&program)
+        guest::preprocess_prover_voj(&mut program)
     });
     let verifier_preprocessing = step!("Preprocessing verifier", {
-        guest::preprocess_verifier_voj(&program)
+        guest::preprocess_verifier_voj(&mut program)
     });
 
     let prove_voj = step!("Building prover", {
