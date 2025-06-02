@@ -9,7 +9,6 @@ macro_rules! step {
     }};
 }
 
-
 pub fn main() {
     let target_dir = "/tmp/voj-guest-targets";
     let program = step!("Compiling guest code", { guest::compile_voj(target_dir) });

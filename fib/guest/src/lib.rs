@@ -3,7 +3,7 @@
 use jolt_sdk as jolt;
 
 #[jolt::provable]
-fn fib(n: u32) -> u128 {
+fn fib(n: u32) -> (u32, u128) {
     let mut a: u128 = 0;
     let mut b: u128 = 1;
     let mut sum: u128;
@@ -13,5 +13,5 @@ fn fib(n: u32) -> u128 {
         b = sum;
     }
 
-    b
+    (n, b)
 }

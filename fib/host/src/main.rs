@@ -9,7 +9,6 @@ macro_rules! step {
     }};
 }
 
-
 pub fn main() {
     let target_dir = "/tmp/fib-guest-targets";
     let program = step!("Compiling guest code", { guest::compile_fib(target_dir) });
@@ -29,8 +28,9 @@ pub fn main() {
     });
 
     let (output, proof) = step!("Proving", { prove_fib(50) });
-    let is_valid = step!("Verifying", { verify_fib(50, output, proof) });
 
-    println!("output: {output}");
+    let is_valid = step!("Verifying", { verify_fib(output.0, output, proof) });
+
+    println!("output: {:?}", output);
     println!("valid: {is_valid}");
 }
