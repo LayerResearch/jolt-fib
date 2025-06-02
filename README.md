@@ -16,13 +16,12 @@ codegen-units = 1
 lto = false
 ```
 
-However, if setting `opt-level = 0` for profile.release:
+However, if removing `opt-level = 0` for profile.release:
 ```toml
 [profile.release]
 debug = 1
 codegen-units = 1
 lto = false
-opt-level = 0
 ```
 The proof verification will fail in this case, even though the computation itself may be correct.
 ```
