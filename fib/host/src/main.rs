@@ -67,7 +67,8 @@ pub fn test() {
         guest::build_verifier_fib(verifier_preprocessing)
     });
 
-    let (output, proof) = step!("Proving", { prove_fib(50) });
+    let input = 50;
+    let (output, proof) = step!("Proving", { prove_fib(input) });
 
     let is_valid = step!("Verifying", { verify_fib(50, output, proof) });
 
