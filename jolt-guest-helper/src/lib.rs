@@ -15,7 +15,7 @@ pub use builder::{Builder, BuilderError};
 #[cfg(feature = "guest")]
 pub use program::{Program, ProgramError};
 
-#[cfg(feature = "guest")]
+// Make proof structures available for both host and guest
 pub use proof::{JoltProofBundle, JoltProofWrapper};
 
 // Re-export macros for convenience

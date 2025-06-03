@@ -1,4 +1,4 @@
-// #![cfg_attr(feature = "guest", no_std)]
+#![cfg_attr(feature = "guest", no_std)]
 
 use jolt_sdk as jolt;
 
