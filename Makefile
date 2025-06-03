@@ -24,6 +24,7 @@ run-fib-host: build-fib-host ## Run the fib-host binary
 build-voj-guest: ## Build the voj-guest binary
 	RUSTUP_TOOLCHAIN=riscv32im-jolt-zkvm-elf \
 	JOLT_FUNC_NAME=voj \
+	RUSTUP_TOOLCHAIN=riscv32im-jolt-zkvm-elf \
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
 	cargo build --release --features guest -p voj-guest --target riscv32im-jolt-zkvm-elf
 
@@ -38,7 +39,7 @@ expand-fib-guest: ## Expand the fib-guest binary
     cargo expand --release --features "jolt-sdk/host" -p fib-guest --lib
 
 run-example: ## Run the fib example
-	cargo build -p jolt-guest-helper --example fib --release
+	cargo build -p jolt-guest-helper --example fib --release --features guest,host
 	./target/release/examples/fib
 
 lint: ## Fix linting errors
