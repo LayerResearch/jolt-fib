@@ -1,19 +1,22 @@
 //! Jolt Guest Helper
-//! 
+//!
 //! A helper library for developing and managing Jolt guest programs.
 //! This library provides a generic interface for handling guest program compilation,
 //! proving, and verification.
 
-mod guest;
+mod builder;
 mod macros;
+mod program;
+mod proof;
 
-pub use guest::{
-    Guest,
-    GuestBuilder,
-    GuestConfig,
-    GuestError,
-};
+#[cfg(feature = "host")]
+pub use builder::{Builder, BuilderError};
+
+#[cfg(feature = "guest")]
+pub use program::{Program, ProgramError};
+
+#[cfg(feature = "guest")]
+pub use proof::{JoltProofBundle, JoltProofWrapper};
 
 // Re-export macros for convenience
 pub use macros::*;
-

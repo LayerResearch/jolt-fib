@@ -5,17 +5,26 @@ edition = "2021"
 description = "Helper library for Jolt guest program development"
 license = "MIT"
 
+[features]
+default = ["host"]
+guest = ["jolt-sdk/guest-std"]
+host = ["jolt-sdk/host"]
+
 [dependencies]
-jolt-sdk = { workspace = true, features = ["host"] }
+jolt-sdk = { workspace = true, default-features = false }
 serde = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }
 postcard = { workspace = true }
 spinners = { workspace = true }
+derive_more = { workspace = true, features = ["full"]}
+rayon = { workspace = true }
 
 [[example]]
 name = "fib"
 path = "examples/fib.rs"
+required-features = ["guest", "host"]
 
 [[example]]
 name = "steps"
 path = "examples/macros.rs"
+

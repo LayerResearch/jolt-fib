@@ -10,9 +10,10 @@ bootstrap: ## Install required dependencies
 	cargo install cargo-nextest cargo-expand
 
 build-fib-guest: ## Build the fib-guest binary
+	RUSTUP_TOOLCHAIN=riscv32im-jolt-zkvm-elf \
 	JOLT_FUNC_NAME=fib \
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
-	cargo build --release --features guest -p fib-guest --target riscv32im-unknown-none-elf
+	cargo build --release --features guest -p fib-guest --target riscv32im-jolt-zkvm-elf
 
 build-fib-host: ## Build the fib-host binary
 	cargo build --release --package fib-host
@@ -21,9 +22,10 @@ run-fib-host: build-fib-host ## Run the fib-host binary
 	RUST_BACKTRACE=1 ./target/release/fib-host
 
 build-voj-guest: ## Build the voj-guest binary
+	RUSTUP_TOOLCHAIN=riscv32im-jolt-zkvm-elf \
 	JOLT_FUNC_NAME=voj \
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
-	cargo build --release --features guest -p voj-guest --target riscv32im-unknown-none-elf
+	cargo build --release --features guest -p voj-guest --target riscv32im-jolt-zkvm-elf
 
 build-voj-host: ## Build the voj-host binary
 	cargo build --release --package voj-host

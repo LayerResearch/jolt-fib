@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-jolt-sdk = { workspace = true, features = ["host"] }
+jolt-sdk = { workspace = true, default-features = false, features = ["host"] }
 fib-guest = { workspace = true }
 ark-serialize = { workspace = true }
 spinners = { workspace = true }

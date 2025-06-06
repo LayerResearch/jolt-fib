@@ -26,4 +26,4 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Error result: {:?}", result);
 
     Ok(())
-} 
+}

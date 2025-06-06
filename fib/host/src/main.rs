@@ -30,7 +30,7 @@ pub fn main() {
 
     let (output, proof) = step!("Proving", { prove_fib(50) });
 
-    let is_valid = step!("Verifying", { verify_fib(output.0, output, proof) });
+    let is_valid = step!("Verifying", { verify_fib(50, output, proof) });
 
     println!("output: {:?}", output);
     println!("valid: {is_valid}");

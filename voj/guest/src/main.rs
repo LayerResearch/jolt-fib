@@ -1,4 +1,4 @@
-#![cfg_attr(feature = "guest", no_std)]
+// #![cfg_attr(feature = "guest", no_std)]
 #![no_main]
 
 use voj_guest as guest;

@@ -4,11 +4,13 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-jolt-sdk = { workspace = true, features = ["host"] }
+jolt-sdk = { workspace = true, default-features = false, features = ["host"] }
+jolt-guest-helper = { workspace = true, features = ["host"] }
 voj-guest = { workspace = true }
 fib-guest = { workspace = true }
 ark-serialize = { workspace = true }
 spinners = { workspace = true }
+bincode = { workspace = true }
 
 [features]
 icicle = ["jolt-sdk/icicle"]

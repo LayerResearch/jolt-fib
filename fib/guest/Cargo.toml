@@ -7,4 +7,4 @@ edition = "2021"
 guest = []
 
 [dependencies]
-jolt-sdk = { workspace = true }
+jolt-sdk = { workspace = true, default-features = false, features = ["guest-std"] }
