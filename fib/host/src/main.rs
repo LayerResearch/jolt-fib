@@ -1,3 +1,5 @@
+use perf_event::events::Hardware;
+use perf_event::Builder;
 use spinners::{Spinner, Spinners};
 
 macro_rules! step {
@@ -8,7 +10,6 @@ macro_rules! step {
         result
     }};
 }
-
 
 pub fn main() {
     let target_dir = "/tmp/fib-guest-targets";
@@ -29,7 +30,21 @@ pub fn main() {
     });
 
     let (output, proof) = step!("Proving", { prove_fib(50) });
+
+    let mut group = Group::new().unwrap();
+    let cycles = group.add(&Builder::new(Hardware::CPU_CYCLES)).unwrap();
+    let insns = group.add(&Builder::new(Hardware::INSTRUCTIONS)).unwrap();
+    group.enable().unwrap();
+
     let is_valid = step!("Verifying", { verify_fib(50, output, proof) });
+
+    let counts = group.read().unwrap();
+    println!(
+        "cycles / instructions: {} / {} ({:.2} cpi)",
+        counts[&cycles],
+        counts[&insns],
+        (counts[&cycles] as f64 / counts[&insns] as f64)
+    );
 
     println!("output: {output}");
     println!("valid: {is_valid}");
