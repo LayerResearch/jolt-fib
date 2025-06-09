@@ -12,7 +12,6 @@ mod proof;
 #[cfg(feature = "host")]
 pub use builder::{Builder, BuilderError};
 
-#[cfg(feature = "guest")]
 pub use program::{Program, ProgramError};
 
 // Make proof structures available for both host and guest

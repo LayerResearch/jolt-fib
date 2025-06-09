@@ -1,8 +1,7 @@
 use clap::{Parser, Subcommand};
 use fib_guest as guest;
-use jolt_guest_helper::JoltProofBundle;
-use perf_event::events::Hardware;
-use perf_event::{Builder, Group};
+use jolt_guest_helper::{Builder, BuilderError, JoltProofBundle, Program};
+use perf_event::{self};
 use serde::{Deserialize, Serialize};
 use spinners::{Spinner, Spinners};
 use std::fs;
@@ -49,7 +48,9 @@ enum Commands {
     Test,
 }
 
-pub fn test() {
+const PKG_NAME: &str = "fib-guest";
+
+pub fn test() -> Result<(), Box<dyn std::error::Error>> {
     let target_dir = "/tmp/fib-guest-targets";
     let mut program = step!("Compiling guest code", { guest::compile_fib(target_dir) });
 
@@ -74,32 +75,40 @@ pub fn test() {
 
     println!("output: {:?}", output);
     println!("valid: {is_valid}");
+
+    Ok(())
 }
 
-fn gen_proofs(output_path: PathBuf) {
-    let target_dir = "/tmp/fib-guest-targets";
-    let mut program = step!("Compiling guest code", { guest::compile_fib(target_dir) });
+fn gen_proofs(output_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    // Create a builder for compilation with build-time settings
+    let builder = Builder::new(PKG_NAME, "fib", "target/fib-guest")
+        .use_std(false)
+        .memory_size(10 * 1024 * 1024) // 10MB
+        .stack_size(4 * 1024); // 4KB
 
-    // Read ELF contents from the compiled guest
-    let elf_path = format!(
-        "{}/fib-guest-fib/riscv32im-unknown-none-elf/release/fib-guest",
-        target_dir
-    );
-    let elf_contents = step!("Reading ELF contents", {
-        fs::read(&elf_path).expect("Failed to read ELF file")
-    });
+    // Build the program
+    let elf_path = step!("Building program", { builder.build() })?;
+    let elf_contents = std::fs::read(&elf_path)
+        .map_err(|e| BuilderError::ReadError(format!("Failed to read ELF file: {}", e)))?;
 
-    let prover_preprocessing = step!("Preprocessing prover", {
-        guest::preprocess_prover_fib(&mut program)
-    });
+    // Create a guest program with runtime settings
+    let mut guest = Program::<u32, u128>::new();
+    guest.max_input_size(4 * 1024); // 4KB
+    guest.max_output_size(4 * 1024); // 4KB
+    guest.memory_size(10 * 1024 * 1024); // 10MB (should match build config)
+    guest.stack_size(4 * 1024); // 4KB (should match build config)
+    guest.elf_contents(&elf_contents);
 
-    let prove_fib = step!("Building prover", {
-        guest::build_prover_fib(program, prover_preprocessing)
-    });
+    // Preprocess for proving and verification
+    step!("Preprocessing prover", { guest.preprocess_prover() })?;
 
-    let (output, proof) = step!("Proving", { prove_fib(50) });
+    // Test with input n = 10
+    let input = 50u32;
 
-    let proof_bundle = JoltProofBundle::new(50u32, output, proof);
+    // Prove the execution
+    let (output, proof) = step!("Proving", { guest.prove(input) })?;
+
+    let proof_bundle = JoltProofBundle::new(input, output, proof);
     let guest_input = GuestInput {
         elf_contents,
         proofs: vec![proof_bundle],
@@ -114,6 +123,8 @@ fn gen_proofs(output_path: PathBuf) {
     });
 
     println!("Proofs generated and saved to: {:?}", output_path);
+
+    Ok(())
 }
 
 fn verify_proofs(input_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
@@ -125,29 +136,39 @@ fn verify_proofs(input_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> 
         postcard::from_bytes(&serialized).expect("Failed to deserialize GuestInput")
     });
 
-    let target_dir = "/tmp/fib-guest-targets";
-    let mut program = step!("Compiling guest code", { guest::compile_fib(target_dir) });
+    // Create a guest program with runtime settings
+    let mut guest = Program::<u32, u128>::new();
+    guest.max_input_size(4 * 1024); // 4KB
+    guest.max_output_size(4 * 1024); // 4KB
+    guest.memory_size(10 * 1024 * 1024); // 10MB (should match build config)
+    guest.stack_size(4 * 1024); // 4KB (should match build config)
+    guest.elf_contents(&guest_input.elf_contents);
 
-    let mut group = Group::new()?;
-    let cycles = group.add(&Builder::new(Hardware::CPU_CYCLES))?;
-    let insns = group.add(&Builder::new(Hardware::INSTRUCTIONS))?;
+    let mut group = perf_event::Group::new()?;
+    let cycles = group.add(&perf_event::Builder::new(
+        perf_event::events::Hardware::CPU_CYCLES,
+    ))?;
+    let insns = group.add(&perf_event::Builder::new(
+        perf_event::events::Hardware::INSTRUCTIONS,
+    ))?;
     group.enable()?;
 
-    let verifier_preprocessing = step!("Preprocessing verifier", {
-        guest::preprocess_verifier_fib(&mut program)
-    });
-
-    let verify_fib = step!("Building verifier", {
-        guest::build_verifier_fib(verifier_preprocessing)
-    });
+    // Preprocess for proving and verification
+    step!("Preprocessing verifier", { guest.preprocess_verifier() })?;
 
     for (i, proof_bundle) in guest_input.proofs.iter().enumerate() {
         let is_valid = step!(format!("Verifying proof {}", i + 1), {
-            verify_fib(
-                proof_bundle.input,
-                proof_bundle.output,
-                proof_bundle.proof.clone().into(),
-            )
+            // Verify the proof
+            let is_valid = step!("Verifying", {
+                guest.verify(
+                    proof_bundle.input,
+                    proof_bundle.output,
+                    proof_bundle.proof.clone().into(),
+                )
+            })?;
+
+            println!("Proof is valid: {}", is_valid);
+            is_valid
         });
         println!(
             "Proof {}: input={}, output={}, valid={}",
@@ -173,14 +194,18 @@ fn verify_proofs(input_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> 
 pub fn main() {
     let cli = Cli::parse();
 
-    match cli.command.unwrap_or(Commands::Test) {
-        Commands::Gen { output } => gen_proofs(output),
-        Commands::Verify { input } => {
-            if let Err(e) = verify_proofs(input) {
-                eprintln!("Error during verification: {}", e);
-                std::process::exit(1);
-            }
-        }
-        Commands::Test => test(),
+    if let Err(e) = run(&cli) {
+        eprintln!("Error: {}", e);
+        std::process::exit(1);
     }
+}
+
+fn run(cli: &Cli) -> Result<(), Box<dyn std::error::Error>> {
+    match cli.command.as_ref().unwrap_or(&Commands::Test) {
+        Commands::Gen { output } => gen_proofs(output.clone())?,
+        Commands::Verify { input } => verify_proofs(input.clone())?,
+        Commands::Test => test()?,
+    }
+
+    Ok(())
 }

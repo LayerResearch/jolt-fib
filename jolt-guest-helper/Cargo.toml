@@ -18,7 +18,6 @@ postcard = { workspace = true }
 spinners = { workspace = true }
 derive_more = { workspace = true, features = ["full"]}
 rayon = { workspace = true }
-derive_more = { workspace = true, features = ["full"]}
 
 [[example]]
 name = "fib"

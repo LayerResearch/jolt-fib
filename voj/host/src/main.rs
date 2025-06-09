@@ -1,9 +1,7 @@
 use std::{fs::File, io::Read, path::PathBuf};
 
-use fib_guest;
 use jolt_sdk::{JoltHyperKZGProof, Serializable};
 use spinners::{Spinner, Spinners};
-use voj_guest;
 
 macro_rules! step {
     ($msg:expr, $action:expr) => {{
@@ -59,7 +57,7 @@ pub fn main() {
             .proofs
             .push(jolt_guest_helper::JoltProofBundle::<u32, u128> {
                 input: i,
-                output: output,
+                output,
                 proof: jolt_guest_helper::JoltProofWrapper::from(proof_for_bundle),
             });
 
