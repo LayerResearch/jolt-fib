@@ -9,6 +9,16 @@ bootstrap: ## Install required dependencies
 	rustup component add clippy rustfmt
 	cargo install cargo-nextest cargo-expand
 
+	apt-get update && apt-get install -y --no-install-recommends gh device-tree-compiler
+
+	@if ! gh auth status >/dev/null 2>&1; then \
+		echo "GitHub authentication required. Please login:"; \
+		gh auth login; \
+	fi
+	mkdir -p /opt/riscv/
+	gh release download --clobber spike-1.1.1 --repo LayerResearch/jolt-fib --pattern "spike-1.1.1-$(shell uname -s)-$(shell uname -m).tar.gz" -O /tmp/spike.tar.gz && tar -xzf /tmp/spike.tar.gz -C /opt/riscv/
+	gh release download --clobber sail-riscv-0.7 --repo LayerResearch/jolt-fib --pattern "sail-riscv-0.7-$(shell uname -s)-$(shell uname -m).tar.gz" -O /tmp/sail.tar.gz && tar -xzf /tmp/sail.tar.gz -C /opt/riscv/
+
 build-fib-guest: ## Build the fib-guest binary
 	RUSTUP_TOOLCHAIN=riscv32im-jolt-zkvm-elf \
 	JOLT_FUNC_NAME=fib \
