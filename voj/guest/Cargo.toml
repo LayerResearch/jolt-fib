@@ -1,0 +1,14 @@
+[package]
+name = "voj-guest"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+guest = []
+
+[dependencies]
+jolt-sdk = { workspace = true, default-features = false, features = ["guest-std"] }
+jolt-guest-helper = { workspace = true, features = ["guest"] }
+serde = { workspace = true, features = ["derive"] }
+bincode = { workspace = true }
+getrandom = { workspace = true, features = ["custom"] }

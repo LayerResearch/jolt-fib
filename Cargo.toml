@@ -1,14 +1,27 @@
 
 [workspace]
 resolver = "2"
-members = ["fib/guest", "fib/host"]
-default-members = ["fib/host"]
+members = ["fib/guest", "fib/host", "jolt-guest-helper", "voj/guest", "voj/host"]
+default-members = ["fib/host", "voj/host"]
 
 [workspace.dependencies]
-jolt-sdk = { git = "https://github.com/a16z/jolt" }
-ark-serialize = "0.5.0"
+jolt-sdk = { git = "https://github.com/a16z/jolt", branch = "feat/twist-shout-integration", default-features = false }
+ark-serialize = { version =  "0.5.0", default-features = false }
+serde = { version = "1.0.219", default-features = false, features = ["derive"] }
+thiserror = { version = "2.0.10", default-features = false }
+postcard = { version = "1.0.8", default-features = false }
+rayon = { version = "1.10.0", default-features = false }
+
 # misc
-spinners = "4.1.1"
+spinners = { version = "4.1.1", default-features = false }
+bincode = { version = "1.3.3", default-features = false }
+derive_more = { version = "2.0.1", default-features = false }
+# local
+fib-guest = { path = "fib/guest", package = "fib-guest", default-features = false }
+voj-guest = { path = "voj/guest", package = "voj-guest", default-features = false }
+jolt-guest-helper = { path = "jolt-guest-helper", package = "jolt-guest-helper", default-features = false }
+# These crates are feature-gated and optimized to minimize dependencies, ensuring compatibility with resource-constrained platforms like riscv32im.
+getrandom = { version = "0.2.16", default-features = false }
 
 [profile.release]
 debug = 1
@@ -20,3 +33,6 @@ opt-level = 0
 ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
+
+[patch.'https://github.com/a16z/jolt']
+jolt-sdk = { path = "./overrides/jolt/jolt-sdk" }
