@@ -2,6 +2,14 @@
 
 This repository contains a Fibonacci number computation example using the Jolt ZKVM system.
 
+## Build fib-host for riscv64gc-unknown-linux-gnu
+```
+rustup target add riscv64gc-unknown-linux-gnu
+cargo run --release --package fib-host 
+cargo run --release --package fib-host -- gen -o `pwd`/client-input.bin
+cargo run --release --package fib-host -- verify -i `pwd`/client-input.bin
+```
+
 ## Known Issues
 
 ### Optimization Level Issue
