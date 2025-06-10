@@ -28,6 +28,7 @@ debug = 1
 codegen-units = 1
 lto = false
 opt-level = 0
+strip = false
 
 [patch.crates-io]
 ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }

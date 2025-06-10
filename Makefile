@@ -23,7 +23,7 @@ bootstrap: ## Install required dependencies
 
 build-fib-guest: ## Build the fib-guest binary
 	JOLT_FUNC_NAME=fib \
-	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Copt-level=z') \
 	cargo build --release --features guest -p fib-guest --target riscv32im-unknown-none-elf
 
 build-fib-host: ## Build the fib-host binary
