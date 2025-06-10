@@ -20,11 +20,11 @@ SECTIONS {
   } > program
 
   .tohost : {
-    *(.tohost)
+    KEEP(*(.tohost))
   } > program
 
   .fromhost : {
-    *(.fromhost)
+    KEEP(*(.fromhost))
   } > program
 
   . = ALIGN(8);
