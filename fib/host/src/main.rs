@@ -44,6 +44,12 @@ enum Commands {
         #[arg(short, long)]
         input: PathBuf,
     },
+    /// Dump serialized bytes of number 5 to a file
+    Dump {
+        /// Output file path for dumped bytes
+        #[arg(short, long)]
+        output: PathBuf,
+    },
     /// Run the test function (default behavior)
     Test,
 }
@@ -191,6 +197,24 @@ fn verify_proofs(input_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> 
     Ok(())
 }
 
+fn dump_number_5(output_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    let number = 5u32;
+    
+    let serialized = step!("Serializing number 5", {
+        postcard::to_allocvec(&number).expect("Failed to serialize number 5")
+    });
+
+    step!("Writing dump file", {
+        fs::write(&output_path, &serialized).expect("Failed to write dump file")
+    });
+
+    println!("Number 5 serialized to {} bytes: {:02x?}", serialized.len(), serialized);
+    println!("Hex dump: {}", serialized.iter().map(|b| format!("\\x{:02x}", b)).collect::<String>());
+    println!("Dumped to: {:?}", output_path);
+
+    Ok(())
+}
+
 pub fn main() {
     let cli = Cli::parse();
 
@@ -204,6 +228,7 @@ fn run(cli: &Cli) -> Result<(), Box<dyn std::error::Error>> {
     match cli.command.as_ref().unwrap_or(&Commands::Test) {
         Commands::Gen { output } => gen_proofs(output.clone())?,
         Commands::Verify { input } => verify_proofs(input.clone())?,
+        Commands::Dump { output } => dump_number_5(output.clone())?,
         Commands::Test => test()?,
     }
 
