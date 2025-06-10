@@ -1,4 +1,3 @@
-
 .PHONY: bootstrap help
 
 help:
@@ -6,10 +5,13 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 bootstrap: ## Install required dependencies
+	git config --global --add safe.directory `pwd`
 	rustup component add clippy rustfmt
 	cargo install cargo-nextest cargo-expand
+	cargo install cross --git https://github.com/cross-rs/cross
 
-	apt-get update && apt-get install -y --no-install-recommends gh device-tree-compiler
+	apt-get update && apt-get install -y --no-install-recommends gh device-tree-compiler file vim.tiny
+	update-alternatives --install /usr/bin/vim vim /usr/bin/vim.tiny 10
 
 	@if ! gh auth status >/dev/null 2>&1; then \
 		echo "GitHub authentication required. Please login:"; \
@@ -26,7 +28,7 @@ build-fib-guest: ## Build the fib-guest binary
 	cargo build --release --features guest -p fib-guest --target riscv32im-jolt-zkvm-elf
 
 build-fib-host: ## Build the fib-host binary
-	cargo build --release --package fib-host
+	cross build --release --package fib-host --target riscv64gc-unknown-linux-gnu
 
 run-fib-host: build-fib-host ## Run the fib-host binary
 	RUST_BACKTRACE=1 ./target/release/fib-host
