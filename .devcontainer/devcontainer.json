@@ -3,7 +3,9 @@
 {
 	"name": "Rust",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/rust:bookworm",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {
 			"installZsh": true,
@@ -12,6 +14,12 @@
 			"installOhMyZshConfig": true,
 			"upgradePackages": false,
 			"username": "root"
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			// Docker Compose v2 is required for or compatible with the repository
+			"dockerDashComposeVersion": "v2.29.1",
+			// https://github.com/devcontainers/features/issues/573#issuecomment-1593854983
+			"moby": false
 		}
 	},
 	// Use 'mounts' to make the cargo cache persistent in a Docker Volume.
