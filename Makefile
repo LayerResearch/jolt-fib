@@ -60,3 +60,11 @@ run-example: ## Run the fib example
 lint: ## Fix linting errors
 	cargo clippy --fix --allow-dirty --allow-staged -- -D warnings
 	cargo fmt --all --
+
+build-sum-sq: ## Build the sum-sq binary to run in Spike
+	CARGO_PROFILE_RELEASE_LTO=false \
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/sum-sq/riscv32im-unknown-none-elf.ld') \
+	cargo build -p sum-sq --release --target riscv32im-unknown-none-elf
+
+run-sum-sq: build-sum-sq
+	spike --isa rv32im ./target/riscv32im-unknown-none-elf/release/sum-sq -l --log=`pwd`/a.log

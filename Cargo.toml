@@ -1,7 +1,7 @@
 
 [workspace]
 resolver = "2"
-members = ["fib/guest", "fib/host", "jolt-guest-helper", "voj/guest", "voj/host"]
+members = ["fib/guest", "fib/host", "jolt-guest-helper", "sum-sq", "voj/guest", "voj/host"]
 default-members = ["fib/host", "voj/host"]
 
 [workspace.dependencies]
