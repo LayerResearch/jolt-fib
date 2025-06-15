@@ -27,7 +27,7 @@ build-fib-guest: ## Build the fib-guest binary
 	cargo build --release --features guest -p fib-guest --target riscv32im-unknown-none-elf
 
 build-fib-host: ## Build the fib-host binary
-	cross build --release --package fib-host --target riscv64gc-unknown-linux-gnu
+	cross build --release --package fib-host --target riscv64gc-unknown-linux-musl
 
 run-fib-host: build-fib-host ## Run the fib-host binary
 	RUST_BACKTRACE=1 ./target/release/fib-host
@@ -38,6 +38,10 @@ build-voj-guest: ## Build the voj-guest binary
 	RUSTUP_TOOLCHAIN=riscv32im-jolt-zkvm-elf \
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
 	cargo build --release --features guest -p voj-guest --target riscv32im-jolt-zkvm-elf
+
+build-voj-guest-riscv64: ## Build the voj-guest-host binary
+	cross build --release --features guest -p voj-guest --target riscv64gc-unknown-linux-musl
+	docker run -it --platform linux/riscv64 --rm -v ./target/riscv64gc-unknown-linux-musl:/srv ubuntu:noble /srv/release/sum
 
 build-voj-host: ## Build the voj-host binary
 	cargo build --release --package voj-host
@@ -67,4 +71,12 @@ build-sum-sq: ## Build the sum-sq binary to run in Spike
 	cargo build -p sum-sq --release --target riscv32im-unknown-none-elf
 
 run-sum-sq: build-sum-sq
-	spike --isa rv32im ./target/riscv32im-unknown-none-elf/release/sum-sq -l --log=`pwd`/a.log
+	spike --isa rv32im ./target/riscv32im-unknown-none-elf/release/sum-sq
+
+build-sum: ## Build the sum-sq binary to run in Spike
+	RUSTFLAGS="-C target-feature=+crt-static" \
+	cross build -p sum --release --target riscv64gc-unknown-linux-musl
+
+run-sum: build-sum
+	docker run -it --platform linux/riscv64 --rm -v ./target/riscv64gc-unknown-linux-musl:/srv ubuntu:noble /srv/release/sum
+	spike --isa rv64gc /opt/riscv/riscv64-unknown-elf/bin/pk  -s ./target/riscv64gc-unknown-linux-musl/release/sum

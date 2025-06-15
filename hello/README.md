@@ -8,7 +8,7 @@ docker run -it --rm -v `pwd`:/srv --platform linux/riscv64 ubuntu:noble bash
 ```
 in the container
 ```bash
-apt-get install -y --no-install-recommends musl musl-dev musl-tools
+apt-get update && apt-get install -y --no-install-recommends build-essential musl musl-dev musl-tools
 cd /srv
 musl-gcc -static -march=rv64gc src/main.c -o hello
 ```
@@ -70,7 +70,7 @@ hello riscv!
 
 ### Build with gcc
 ```bash
-apt-get install -y --no-install-recommends build-essential file
+apt-get update && apt-get install -y --no-install-recommends build-essential file
 cd /srv
 gcc -g -static -march=rv64gc src/main.c -o hello
 ```
@@ -133,7 +133,7 @@ Program Headers:
 
 ### Build with riscv64-unknown-elf-gcc
 ```bash
-apt-get install -y --no-install-recommends gcc-riscv64-unknown-elf
+apt-get update && apt-get install -y --no-install-recommends gcc-riscv64-unknown-elf
 cd /srv
 riscv64-unknown-elf-gcc -nostdlib -nostartfiles -march=rv64gc -T src/linker.ld src/start.S src/hello.c -o hello
 ```

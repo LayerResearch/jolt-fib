@@ -199,7 +199,7 @@ fn verify_proofs(input_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> 
 
 fn dump_number_5(output_path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
     let number = 5u32;
-    
+
     let serialized = step!("Serializing number 5", {
         postcard::to_allocvec(&number).expect("Failed to serialize number 5")
     });
@@ -208,9 +208,21 @@ fn dump_number_5(output_path: PathBuf) -> Result<(), Box<dyn std::error::Error>>
         fs::write(&output_path, &serialized).expect("Failed to write dump file")
     });
 
-    println!("Number 5 serialized to {} bytes: {:02x?}", serialized.len(), serialized);
-    println!("Hex dump: {}", serialized.iter().map(|b| format!("\\x{:02x}", b)).collect::<String>());
+    println!(
+        "Number 5 serialized to {} bytes: {:02x?}",
+        serialized.len(),
+        serialized
+    );
+    println!(
+        "Hex dump: {}",
+        serialized
+            .iter()
+            .map(|b| format!("\\x{:02x}", b))
+            .collect::<String>()
+    );
     println!("Dumped to: {:?}", output_path);
+
+    postcard::take_from_bytes::<u32>(&serialized).unwrap();
 
     Ok(())
 }

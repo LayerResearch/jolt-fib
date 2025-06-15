@@ -13,6 +13,10 @@ serde = { version = "1.0", features = ["derive"] }
 postcard = "1.0"
 jolt-guest-helper = { path = "../../jolt-guest-helper" }
 perf-event2 = { version = "0.7.4" }
+openssl = { version = "*", features = ["vendored"] }
+
+[build-dependencies]
+openssl = { version = '*', features = ["vendored"] }
 
 [features]
 icicle = ["jolt-sdk/icicle"]
