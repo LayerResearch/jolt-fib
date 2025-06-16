@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 int main(){
     printf("hello riscv!\n");
-    return 13;
+    exit(13);
 }
 

@@ -71,7 +71,7 @@ core   0:           tval 0x00000000000000f8
 ### Build with riscv64-unknown-elf-gcc
 #### In Container
 ```bash
-apt-get update && apt-get install -y --no-install-recommends gcc-riscv64-unknown-elf picolibc-riscv64-unknown-elf
+apt-get update && apt-get install -y --no-install-recommends gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf picolibc-riscv64-unknown-elf
 cd /srv
 riscv64-unknown-elf-gcc -nostdlib -nostartfiles -march=rv64gc -T src/linker.ld src/start.S src/number.c -o number
 ```
@@ -86,7 +86,7 @@ riscv64-unknown-elf-gcc -nostdlib -nostartfiles -march=rv64gc -T src/linker.ld s
 42
 ```
 
-### On host
+#### On host
 ```bash
 $ qemu-riscv64-static ./number
 $ echo $?
