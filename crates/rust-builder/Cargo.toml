@@ -1,0 +1,18 @@
+[package]
+name = "rust-builder"
+version = "0.1.0"
+edition = "2021"
+description = "Utilities for building Rust programs with custom toolchains"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+glob = "0.3"
+thiserror = "1.0"
+log = "0.4"
+
+[dev-dependencies]
+tempfile = "3.8"
+
+[features]
+# Enable build.rs specific functionality
+build-script = [] 
