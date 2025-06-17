@@ -1,0 +1,26 @@
+[package]
+name = "spike-tracer"
+version = "0.1.0"
+edition = "2021"
+description = "Spike-based RISC-V execution tracer for Jolt"
+license = "MIT"
+
+[build-dependencies]
+# autocxx for C++ integration
+autocxx-build = "0.26"
+glob = "0.3"
+rust-builder = { path = "../rust-builder" }
+
+[dependencies]
+anyhow = "1.0"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+
+# autocxx dependencies for C++ integration
+autocxx = "0.26"
+cxx = "1.0"
+
+[dev-dependencies]
+rust-builder = { path = "../rust-builder" }
+env_logger = "0.10"

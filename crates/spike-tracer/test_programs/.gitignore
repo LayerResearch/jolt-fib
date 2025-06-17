@@ -1,0 +1,6 @@
+# Build artifacts are now generated in OUT_DIR by build.rs
+# (No local build directory needed)
+
+# Temporary files
+*~
+.DS_Store 

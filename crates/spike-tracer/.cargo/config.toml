@@ -1,0 +1,6 @@
+[target.riscv32im-unknown-none-elf]
+rustflags = [
+  "-C", "link-arg=-Ttest_programs/linker.ld",
+  "-C", "link-arg=--gc-sections",
+  "-C", "panic=abort",
+] 
