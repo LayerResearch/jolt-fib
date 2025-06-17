@@ -1,0 +1,6 @@
+[submodule "overrides/jolt"]
+	path = overrides/jolt
+	url = https://github.com/LayerResearch/jolt.git
+[submodule "overrides/riscv-isa-sim"]
+	path = overrides/riscv-isa-sim
+	url = https://github.com/riscv-software-src/riscv-isa-sim.git

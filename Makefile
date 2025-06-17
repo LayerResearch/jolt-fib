@@ -19,10 +19,9 @@ bootstrap: ## Install required dependencies
 	gh release download --clobber sail-riscv-0.7 --repo LayerResearch/jolt-fib --pattern "sail-riscv-0.7-$(shell uname -s)-$(shell uname -m).tar.gz" -O /tmp/sail.tar.gz && tar -xzf /tmp/sail.tar.gz -C /opt/riscv/
 
 build-fib-guest: ## Build the fib-guest binary
-	RUSTUP_TOOLCHAIN=riscv32im-jolt-zkvm-elf \
 	JOLT_FUNC_NAME=fib \
-	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
-	cargo build --release --features guest -p fib-guest --target riscv32im-jolt-zkvm-elf
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/workspaces/jolt-fib/riscv32im-unknown-none-elf.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Copt-level=z') \
+	cargo build --release --features guest -p fib-guest --target riscv32im-unknown-none-elf
 
 build-fib-host: ## Build the fib-host binary
 	cargo build --release --package fib-host
