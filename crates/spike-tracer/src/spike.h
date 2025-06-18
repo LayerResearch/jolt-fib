@@ -11,7 +11,10 @@ public:
     SpikeTracer(const rust::Str isa);
     
     // Using rust::String in C++
-    int run(const rust::Str elf, const rust::Slice<const uint8_t> input, const rust::Slice<uint8_t> output);
+    int run(const rust::Str elf, 
+            const rust::Slice<const uint8_t> input, 
+            const rust::Slice<uint8_t> output,
+            const rust::Str log_path = "");
 
 private:
     uint64_t max_instructions;

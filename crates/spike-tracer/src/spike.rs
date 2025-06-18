@@ -6,7 +6,13 @@ mod ffi {
         pub type SpikeTracer;
 
         pub fn new_spike_tracer(isa: &str) -> UniquePtr<SpikeTracer>;
-        fn run(self: Pin<&mut SpikeTracer>, elf: &str, input: &[u8], output: &mut [u8]) -> i32;
+        fn run(
+            self: Pin<&mut SpikeTracer>,
+            elf: &str,
+            input: &[u8],
+            output: &mut [u8],
+            log_path: &str,
+        ) -> i32;
     }
 }
 

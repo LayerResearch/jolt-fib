@@ -14,7 +14,8 @@ SpikeTracer::SpikeTracer(const rust::Str isa) : max_instructions(1000000), isa(i
 int SpikeTracer::run(
     const rust::Str elf,
     const rust::Slice<const uint8_t> input,
-    const rust::Slice<uint8_t> output
+    const rust::Slice<uint8_t> output,
+    const rust::Str log_path
 ) {
     // Create configuration
     cfg_t cfg;
@@ -44,7 +45,11 @@ int SpikeTracer::run(
     htif_args.push_back(std::string(elf.data(), elf.size()));
     
     debug_module_config_t dm_config;
-    sim_t sim(&cfg, false, mems, {}, htif_args, dm_config, nullptr, true, nullptr, false, nullptr, max_instructions);
+    const char* log_path_ptr = log_path.size() > 0 ? log_path.data() : nullptr;
+    sim_t sim(&cfg, false, mems, {}, htif_args, dm_config, log_path_ptr, true, nullptr, false, nullptr, max_instructions);
+
+    // Configure logging
+    sim.configure_log(false, true);  // Enable both instruction trace and commit log
 
     // Run the simulator
     auto return_code = sim.run();

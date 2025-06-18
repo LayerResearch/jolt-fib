@@ -24,10 +24,19 @@ fn test_simple_add_elf_execution() {
     let elf_data = fs::read(&elf_path).expect("Failed to read simple_add.elf");
     info!("Loaded simple_add.elf: {} bytes", elf_data.len());
 
+    let log_file = tempfile::NamedTempFile::new().expect("Failed to create temp log file");
+    let log_path = log_file
+        .path()
+        .to_str()
+        .expect("Log path is not valid UTF-8");
+    info!("Created temporary log file at {}", log_path);
+
     let elf_str = elf_path.to_str().expect("ELF path is not valid UTF-8");
     let input = vec![0; 1024];
     let mut output = vec![0; 1024];
-    let return_code = tracer.pin_mut().run(&elf_str, &input, &mut output);
+    let return_code = tracer
+        .pin_mut()
+        .run(&elf_str, &input, &mut output, log_path);
     info!("Program terminated with return code: {}", return_code);
 
     info!("🎉 Rust simple_add test passed!");
