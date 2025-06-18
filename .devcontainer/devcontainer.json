@@ -43,7 +43,8 @@
 				"rust-lang.rust-analyzer",
 				"GitHub.vscode-pull-request-github",
 				"EditorConfig.EditorConfig",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"llvm-vs-code-extensions.vscode-clangd"
 			]
 		}
 	},
