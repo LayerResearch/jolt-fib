@@ -19,6 +19,9 @@ serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
 cxx = "1.0"
 tempfile = "3.20"
+capstone = "0.13.0"
+regex = "1.11.0"
+jolt-sdk = { workspace = true, features = ["host"] }
 
 [dev-dependencies]
 rust-builder = { path = "../rust-builder" }

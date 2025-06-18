@@ -27,5 +27,6 @@ pub enum SpikeError {
 }
 
 mod spike;
+mod log_parser;
 
 pub use spike::SpikeTracer;

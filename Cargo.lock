@@ -600,6 +600,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 
 [[package]]
+name = "capstone"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "015ef5d5ca1743e3f94af9509ba6bd2886523cfee46e48d15c2ef5216fd4ac9a"
+dependencies = [
+ "capstone-sys",
+ "libc",
+]
+
+[[package]]
+name = "capstone-sys"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2267cb8d16a1e4197863ec4284ffd1aec26fe7e57c58af46b02590a0235809a0"
+dependencies = [
+ "cc",
+ "libc",
+]
+
+[[package]]
 name = "cc"
 version = "1.2.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -689,7 +709,6 @@ checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 [[package]]
 name = "common"
 version = "0.2.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "ark-serialize 0.5.0",
  "serde",
@@ -1850,7 +1869,6 @@ dependencies = [
 [[package]]
 name = "jolt-core"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "alloy-primitives",
  "alloy-sol-types",
@@ -1907,7 +1925,6 @@ dependencies = [
 [[package]]
 name = "jolt-sdk"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "ark-bn254",
  "ark-ec",
@@ -1921,7 +1938,6 @@ dependencies = [
 [[package]]
 name = "jolt-sdk-macros"
 version = "0.1.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "common",
  "proc-macro2",
@@ -3150,14 +3166,18 @@ name = "spike-tracer"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "capstone",
  "cxx",
  "cxx-build",
  "env_logger",
  "glob",
+ "jolt-sdk",
  "log",
  "miette",
+ "regex",
  "rust-builder",
  "serde",
+ "tempfile",
  "thiserror 2.0.12",
 ]
 
@@ -3374,9 +3394,9 @@ checksum = "61c41af27dd6d1e27b1b16b489db798443478cef1f06a660c96db617ba5de3b1"
 
 [[package]]
 name = "tempfile"
-version = "3.19.1"
+version = "3.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7437ac7763b9b123ccf33c338a5cc1bac6f69b45a136c19bdd8a65e3916435bf"
+checksum = "e8a64e3985349f2441a1a9ef0b853f869006c3855f2cda6862a94d26ebb9d6a1"
 dependencies = [
  "fastrand",
  "getrandom 0.3.3",
@@ -3579,7 +3599,6 @@ checksum = "8df9b6e13f2d32c91b9bd719c00d1958837bc7dec474d94952798cc8e69eeec3"
 [[package]]
 name = "tracer"
 version = "0.2.0"
-source = "git+https://github.com/a16z/jolt#1a6227a98784d9ceaab5433ae1635feda2b67c40"
 dependencies = [
  "common",
  "fnv",

@@ -44,6 +44,10 @@ impl SpikeTracer {
     ///
     /// Returns the exit code from the simulation
     pub fn run(&mut self, elf: &str, input: &[u8], output: &mut [u8], log_path: &str) -> i32 {
-        self.inner.pin_mut().run(elf, input, output, log_path)
+        let return_code = self.inner.pin_mut().run(elf, input, output, log_path);
+        // TODO: Parse the log file and return the trace
+        // let log_parser = log_parser::LogParser::new(log_path);
+        // let log_parser = log_parser.parse_log();
+        return_code
     }
 }
