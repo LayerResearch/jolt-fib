@@ -21,3 +21,6 @@ RUN <<-'EOF' bash
 	# https://github.com/ohmyzsh/ohmyzsh/issues/7426
 	echo 'export LANG=en_US.UTF-8' >> $HOME/.zshrc
 EOF
+
+ENV PATH="/opt/riscv/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/opt/riscv/lib:${LD_LIBRARY_PATH}"
