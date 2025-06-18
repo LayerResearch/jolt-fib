@@ -21,11 +21,11 @@ int SpikeTracer::run(
     cfg_t cfg;
     cfg.isa = isa.c_str();
     cfg.priv = "MSU";  // Machine, Supervisor, User modes
-    cfg.misaligned = false;
+    cfg.misaligned = false;  // Disable misaligned access for deterministic behavior
     cfg.endianness = endianness_little;
     cfg.pmpregions = 16;
     cfg.pmpgranularity = 4;
-    cfg.real_time_clint = false;
+    cfg.real_time_clint = false;  // Disable real-time CLINT for deterministic behavior
     cfg.trigger_count = 4;
     cfg.cache_blocksz = 64;
     
@@ -48,8 +48,9 @@ int SpikeTracer::run(
     const char* log_path_ptr = log_path.size() > 0 ? log_path.data() : nullptr;
     sim_t sim(&cfg, false, mems, {}, htif_args, dm_config, log_path_ptr, true, nullptr, false, nullptr, max_instructions);
 
-    // Configure logging
-    sim.configure_log(false, true);  // Enable both instruction trace and commit log
+    // Configure logging for zkvm trace generation
+    sim.configure_log(true, true);  // Enable both instruction trace and commit log
+    sim.set_histogram(false);  // Disable histogram for cleaner logs
 
     // Run the simulator
     auto return_code = sim.run();
