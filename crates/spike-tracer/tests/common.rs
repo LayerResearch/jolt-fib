@@ -1,9 +1,9 @@
+use rust_builder::{build_rust_program, BuildConfig};
+use spike_tracer::MemoryConfig;
+use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use std::env;
-use rust_builder::{build_rust_program, BuildConfig};
-use spike_tracer::MemoryConfig;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -20,9 +20,6 @@ pub enum TestError {
 
 pub const DEFAULT_MEMORY_CONFIG: MemoryConfig = MemoryConfig {
     memory_size: 64 * 1024 * 1024, // 64MB
-    max_input_size: 1024,
-    max_output_size: 1024,
-    stack_size: 1024 * 1024, // 1MB
 };
 
 pub const MAX_INSTRUCTIONS: u64 = 100000;
@@ -40,7 +37,8 @@ pub fn build_test_program(source_path: &str) -> Result<PathBuf, TestError> {
     }
 
     // Get output path from source path
-    let source_name = Path::new(source_path).file_stem()
+    let source_name = Path::new(source_path)
+        .file_stem()
         .ok_or_else(|| TestError::Build("Invalid source path".to_string()))?
         .to_string_lossy();
     let output_path = build_dir.join(format!("{}.elf", source_name));
@@ -66,12 +64,13 @@ pub fn build_test_program(source_path: &str) -> Result<PathBuf, TestError> {
 
 pub fn get_tohost_address(elf_path: &Path) -> Result<u64, TestError> {
     if !elf_path.exists() {
-        return Err(TestError::Symbol(format!("ELF file not found: {}", elf_path.display())));
+        return Err(TestError::Symbol(format!(
+            "ELF file not found: {}",
+            elf_path.display()
+        )));
     }
 
-    let output = Command::new("riscv64-unknown-elf-nm")
-        .arg(elf_path)
-        .output()?;
+    let output = Command::new("nm").arg(elf_path).output()?;
 
     if !output.status.success() {
         return Err(TestError::Symbol("Failed to run nm on ELF file".into()));
@@ -92,5 +91,7 @@ pub fn get_tohost_address(elf_path: &Path) -> Result<u64, TestError> {
         }
     }
 
-    Err(TestError::Symbol("tohost symbol not found in ELF file".into()))
-} 
+    Err(TestError::Symbol(
+        "tohost symbol not found in ELF file".into(),
+    ))
+}

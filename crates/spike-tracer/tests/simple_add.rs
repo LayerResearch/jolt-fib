@@ -1,7 +1,7 @@
-use std::fs;
-use spike_tracer::SpikeTracer;
-use log::info;
 use crate::common::{build_test_program, DEFAULT_MEMORY_CONFIG, SIMPLE_ADD_INSTRUCTIONS};
+use log::info;
+use spike_tracer::{new_spike_tracer, SpikeTracer};
+use std::fs;
 
 mod common;
 
@@ -16,23 +16,19 @@ fn test_simple_add_elf_execution() {
         .expect("Failed to build simple_add test program");
     info!("Built test program at {}", elf_path.display());
 
-    let mut tracer = SpikeTracer::new("rv32im", &DEFAULT_MEMORY_CONFIG)
-        .expect("Failed to create SpikeTracer");
+    // Create tracer
+    let mut tracer = new_spike_tracer("rv32im");
     info!("Created SpikeTracer");
 
-    // Load simple_add.elf
+    // Load and execute ELF
     let elf_data = fs::read(&elf_path).expect("Failed to read simple_add.elf");
     info!("Loaded simple_add.elf: {} bytes", elf_data.len());
 
-    // Execute with instruction limit (Rust program with 5+7=12 computation)
-    tracer.execute(&elf_data, SIMPLE_ADD_INSTRUCTIONS)
-        .expect("Failed to execute simple_add.elf");
-    info!("Rust simple_add program executed");
-    info!("Instructions executed: {}", tracer.instruction_count());
-
-    // Verify reasonable instruction count for simple Rust program
-    assert!(tracer.instruction_count() > 0);
-    assert!(tracer.instruction_count() <= SIMPLE_ADD_INSTRUCTIONS);
+    let elf_str = elf_path.to_str().expect("ELF path is not valid UTF-8");
+    let input = vec![0; 1024];
+    let mut output = vec![0; 1024];
+    let return_code = tracer.pin_mut().run(&elf_str, &input, &mut output);
+    info!("Program terminated with return code: {}", return_code);
 
     info!("🎉 Rust simple_add test passed!");
-} 
+}

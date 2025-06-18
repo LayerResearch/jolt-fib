@@ -9,7 +9,6 @@ macro_rules! step {
     }};
 }
 
-
 pub fn main() {
     let target_dir = "/tmp/fib-guest-targets";
     let program = step!("Compiling guest code", { guest::compile_fib(target_dir) });

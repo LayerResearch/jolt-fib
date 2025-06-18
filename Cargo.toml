@@ -1,7 +1,7 @@
 
 [workspace]
 resolver = "2"
-members = ["fib/guest", "fib/host"]
+members = ["fib/guest", "fib/host", "crates/rust-builder", "crates/spike-tracer", ]
 default-members = ["fib/host"]
 
 [workspace.dependencies]

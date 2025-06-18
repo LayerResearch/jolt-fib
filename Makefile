@@ -8,7 +8,7 @@ bootstrap: ## Install required dependencies
 	rustup component add clippy rustfmt
 	cargo install cargo-nextest cargo-expand
 
-	apt-get update && apt-get install -y --no-install-recommends gh device-tree-compiler
+	apt-get update && apt-get install -y --no-install-recommends file gh device-tree-compiler clang clangd
 
 	@if ! gh auth status >/dev/null 2>&1; then \
 		echo "GitHub authentication required. Please login:"; \
@@ -28,3 +28,7 @@ build-fib-host: ## Build the fib-host binary
 
 run-fib-host: build-fib-host ## Run the fib-host binary
 	RUST_BACKTRACE=1 ./target/release/fib-host
+
+lint: ## Run clippy
+	cargo clippy --allow-dirty --allow-staged --fix
+	cargo fmt

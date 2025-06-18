@@ -6,21 +6,20 @@ description = "Spike-based RISC-V execution tracer for Jolt"
 license = "MIT"
 
 [build-dependencies]
-# autocxx for C++ integration
-autocxx-build = "0.26"
 glob = "0.3"
+cxx-build = "1.0"
+
 rust-builder = { path = "../rust-builder" }
+miette = { version = "5", features = ["fancy"] } # optional but gives nicer error messages!
 
 [dependencies]
 anyhow = "1.0"
-thiserror = "1.0"
+thiserror = "2.0"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
 
-# autocxx dependencies for C++ integration
-autocxx = "0.26"
 cxx = "1.0"
 
 [dev-dependencies]
 rust-builder = { path = "../rust-builder" }
-env_logger = "0.10"
+env_logger = "0.11"

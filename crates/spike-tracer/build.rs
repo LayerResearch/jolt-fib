@@ -1,6 +1,7 @@
+use miette;
 use std::env;
 
-fn main() {
+fn main() -> miette::Result<()> {
     // Use RISCV environment variable, default to /opt/riscv
     let riscv = env::var("RISCV").unwrap_or_else(|_| "/opt/riscv".to_string());
     let riscv_lib = format!("{}/lib", riscv);
@@ -19,17 +20,16 @@ fn main() {
     // Tell cargo to invalidate the built crate whenever these files change
     println!("cargo:rerun-if-changed={}", riscv_include);
     println!("cargo:rerun-if-changed=build.rs");
-    println!("cargo:rerun-if-changed=src/autocxx_ffi.rs");
+    println!("cargo:rerun-if-changed=src/spike.rs");
+    println!("cargo:rerun-if-changed=src/spike.cc");
+    println!("cargo:rerun-if-changed=src/spike.h");
     println!("cargo:rerun-if-changed=test_programs/");
 
-    // Build autocxx integration
-    let mut build = autocxx_build::Builder::new("src/autocxx_ffi.rs", &[&riscv_include])
-        .extra_clang_args(&["-std=c++17"])
-        .build()
-        .unwrap();
+    cxx_build::bridge("src/spike.rs")
+        .file("src/spike.cc")
+        .std("c++17")
+        .includes([&riscv_include])
+        .compile("spike-tracer");
 
-    build
-        .flag_if_supported("-std=c++17")
-        .include(&riscv_include)
-        .compile("spike-autocxx");
+    Ok(())
 }
