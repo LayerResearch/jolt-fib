@@ -28,4 +28,4 @@ pub enum SpikeError {
 
 mod spike;
 
-pub use spike::{new_spike_tracer, SpikeTracer};
+pub use spike::SpikeTracer;

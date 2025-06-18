@@ -2,7 +2,7 @@ use crate::common::{
     build_test_program, get_tohost_address, DEFAULT_MEMORY_CONFIG, MAX_INSTRUCTIONS,
 };
 use log::info;
-use spike_tracer::{new_spike_tracer, SpikeTracer};
+use spike_tracer::SpikeTracer;
 use std::fs;
 
 mod common;
@@ -18,7 +18,7 @@ fn test_counter_elf_execution() {
         .expect("Failed to build counter test program");
     info!("Built test program at {}", elf_path.display());
 
-    let mut tracer = new_spike_tracer("rv32im");
+    let mut tracer = SpikeTracer::new("rv32im");
     info!("Created SpikeTracer");
 
     // Load counter.elf
@@ -40,9 +40,7 @@ fn test_counter_elf_execution() {
     let input = vec![0; 1024];
     let mut output = vec![0; 1024];
 
-    let return_code = tracer
-        .pin_mut()
-        .run(&elf_str, &input, &mut output, log_path);
+    let return_code = tracer.run(&elf_str, &input, &mut output, log_path);
     info!("Program terminated with return code: {}", return_code);
     info!("Program terminated normally");
 

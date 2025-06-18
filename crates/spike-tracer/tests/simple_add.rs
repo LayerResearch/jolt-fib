@@ -1,6 +1,6 @@
 use crate::common::{build_test_program, DEFAULT_MEMORY_CONFIG, SIMPLE_ADD_INSTRUCTIONS};
 use log::info;
-use spike_tracer::{new_spike_tracer, SpikeTracer};
+use spike_tracer::SpikeTracer;
 use std::fs;
 
 mod common;
@@ -17,7 +17,7 @@ fn test_simple_add_elf_execution() {
     info!("Built test program at {}", elf_path.display());
 
     // Create tracer
-    let mut tracer = new_spike_tracer("rv32im");
+    let mut tracer = SpikeTracer::new("rv32im");
     info!("Created SpikeTracer");
 
     // Load and execute ELF
@@ -34,9 +34,7 @@ fn test_simple_add_elf_execution() {
     let elf_str = elf_path.to_str().expect("ELF path is not valid UTF-8");
     let input = vec![0; 1024];
     let mut output = vec![0; 1024];
-    let return_code = tracer
-        .pin_mut()
-        .run(&elf_str, &input, &mut output, log_path);
+    let return_code = tracer.run(&elf_str, &input, &mut output, log_path);
     info!("Program terminated with return code: {}", return_code);
 
     info!("🎉 Rust simple_add test passed!");
